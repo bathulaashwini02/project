@@ -2,19 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Validate') {
+        stage('Docker Build') {
             steps {
-		sh 'mvn validate'
+		sh 'docker build -t bathulaashwini02/project .'
             }
         }
-        stage('Unit Test') {
+        stage('Start Container') {
             steps {
-		sh 'mvn test'
-            }
-        }
-        stage('Sonar Analysis') {
-            steps {
-		sh 'mvn sonar:sonar  -Dsonar.host.url=http://18.212.75.122:9000 -Dsonar.login=e3117fe7ce4e28419ee234c75acc776207c73b95'
+		sh 'docker container run -dt -p 9090:8080 bathulaashwini02/project'
             }
         }
     }
